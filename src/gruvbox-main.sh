@@ -14,6 +14,7 @@ source "${CURRENT_DIR}/tmux_utils.sh"
 
 readonly TMUX_GRUVBOX="@tmux-gruvbox"
 readonly TMUX_GRUVBOX_STATUSBAR_ALPHA="@tmux-gruvbox-statusbar-alpha"
+readonly TMUX_GRUVBOX_ZOOM_COLOR="@tmux-gruvbox-zoom-color"
 readonly TMUX_GRUVBOX_LEFT_STATUS_A="@tmux-gruvbox-left-status-a"
 readonly TMUX_GRUVBOX_RIGHT_STAUTS_X="@tmux-gruvbox-right-status-x"
 readonly TMUX_GRUVBOX_RIGHT_STAUTS_Y="@tmux-gruvbox-right-status-y"
@@ -22,6 +23,7 @@ readonly TMUX_GRUVBOX_RIGHT_STAUTS_Z="@tmux-gruvbox-right-status-z"
 # define simple theme options (no color interpolation required)
 readonly DEFAULT_THEME="dark256"
 readonly DEFAULT_STATUSBAR_ALPHA='false'
+readonly DEFAULT_ZOOM_COLOR='false'
 # defaults for theme option (with color interpolation)
 readonly DEFAULT_LEFT_STATUS_A='#S'
 readonly DEFAULT_RIGHT_STATUS_X='%Y-%m-%d'
@@ -35,6 +37,7 @@ main() {
   local _theme
   _theme=$(tmux_get_option "${TMUX_GRUVBOX}" "${DEFAULT_THEME}")
   _statusbar_alpha=$(tmux_get_option "${TMUX_GRUVBOX_STATUSBAR_ALPHA}" "${DEFAULT_STATUSBAR_ALPHA}")
+  _zoom_color=$(tmux_get_option "${TMUX_GRUVBOX_ZOOM_COLOR}" "${DEFAULT_ZOOM_COLOR}")
 
   case "$_theme" in
   light)
@@ -76,6 +79,7 @@ main() {
     "$_status_right_y"
     "$_status_right_z"
     "$_statusbar_alpha"
+    "$_zoom_color"
   )
 
   case $_theme in

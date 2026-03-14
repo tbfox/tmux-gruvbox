@@ -5,12 +5,13 @@
 #
 # shellcheck disable=SC2154
 theme_set_light256() {
-  local _left_status_a _right_status_x _right_status_y _right_status_z _statusbar_alpha
+  local _left_status_a _right_status_x _right_status_y _right_status_z _statusbar_alpha _zoom_color
   _left_status_a=$1
   _right_status_x=$2
   _right_status_y=$3
   _right_status_z=$4
   _statusbar_alpha=$5
+  _zoom_color=$6
 
   tmux_append_seto "status" "on"
 
@@ -70,7 +71,14 @@ theme_set_light256() {
   # current window
   local _current_window_status_format_bg=${col_bg2}
   if [[ "$_statusbar_alpha" == "true" ]]; then _current_window_status_format_bg="default"; fi
-  tmux_append_setwo "window-status-current-format" "#[bg=${col_yellow},fg=${col_bg2},nobold,noitalics,nounderscore]#[bg=${col_yellow},fg=${col_fg1}] #I #[bg=${col_yellow},fg=${col_fg1},bold] #W#{?window_zoomed_flag,*Z,} #{?window_end_flag,#[bg=${_current_window_status_format_bg}],#[bg=${col_bg2}]}#[fg=${col_yellow},nobold,noitalics,nounderscore]"
+  local _active_bg _zoomed_flag
+  _active_bg="${col_yellow}"
+  _zoomed_flag='#{?window_zoomed_flag,*Z,}'
+  if [[ "$_zoom_color" == "true" ]]; then
+    _active_bg="#{?window_zoomed_flag,${col_orange},${col_yellow}}"
+    _zoomed_flag=""
+  fi
+  tmux_append_setwo "window-status-current-format" "#[bg=${_active_bg},fg=${col_bg2},nobold,noitalics,nounderscore]#[bg=${_active_bg},fg=${col_fg1}] #I #[bg=${_active_bg},fg=${col_fg1},bold] #W${_zoomed_flag} #{?window_end_flag,#[bg=${_current_window_status_format_bg}],#[bg=${col_bg2}]}#[fg=${_active_bg},nobold,noitalics,nounderscore]"
 
   # default window
   local _default_window_status_format_bg=${col_bg2}
